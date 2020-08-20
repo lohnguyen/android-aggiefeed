@@ -1,4 +1,4 @@
-package com.example.aggiefeed;
+package com.lohnguyen.aggiefeed;
 
 public class AFActivity {
     public String title;

@@ -1,4 +1,4 @@
-package com.example.aggiefeed;
+package com.lohnguyen.aggiefeed;
 
 import androidx.appcompat.app.AppCompatActivity;
 

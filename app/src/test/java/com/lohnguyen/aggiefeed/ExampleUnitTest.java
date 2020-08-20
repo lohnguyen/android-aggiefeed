@@ -1,4 +1,4 @@
-package com.example.aggiefeed;
+package com.lohnguyen.aggiefeed;
 
 import org.junit.Test;
 

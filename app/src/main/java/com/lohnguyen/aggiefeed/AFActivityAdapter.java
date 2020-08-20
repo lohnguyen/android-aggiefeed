@@ -1,4 +1,4 @@
-package com.example.aggiefeed;
+package com.lohnguyen.aggiefeed;
 
 import android.content.Context;
 import android.view.LayoutInflater;
