@@ -2,14 +2,15 @@ package com.example.aggiefeed;
 
 public class AFActivity {
     public String title;
-    public String actor;
+    public String displayName;
     public String objectType;
-    public String displayedName;
+    public String published;
 
-    public AFActivity(String title, String actor, String objectType, String displayedName) {
-        title = title;
-        actor = actor;
-        objectType = objectType;
-        displayedName = displayedName;
+
+    public AFActivity(String title, String displayName, String objectType, String published) {
+        this.title = title;
+        this.displayName = displayName;
+        this.objectType = objectType;
+        this.published = published;
     }
 }

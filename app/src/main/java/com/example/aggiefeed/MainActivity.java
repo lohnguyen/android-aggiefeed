@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +22,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String AF_URL = "https://aggiefeed.ucdavis.edu/api/v1/activity/public?s=0?l=25";
 
     @Override
@@ -33,28 +34,34 @@ public class MainActivity extends AppCompatActivity {
         activityManager.execute();
     }
 
-    private class AFActivityManager extends AsyncTask<URL, Void, ArrayList<AFActivity>> {
+    private void updateUI(ArrayList<AFActivity> activities) {
+        AFActivityAdapter flavorAdapter = new AFActivityAdapter(this, activities);
 
+        ListView listView = findViewById(R.id.list_view_activities);
+        listView.setAdapter(flavorAdapter);
+    }
+
+    private class AFActivityManager extends AsyncTask<URL, Void, ArrayList<AFActivity>> {
         @Override
         protected ArrayList<AFActivity> doInBackground(URL... urls) {
             URL url = createURL(AF_URL);
-            String response = "";
-            ArrayList<AFActivity> activities = new ArrayList<AFActivity>();
+            String response;
+            ArrayList<AFActivity> activities = new ArrayList<>();
 
             try {
                 response = makeGET(url);
                 generateActivities(activities, response);
-            } catch (IOException | JSONException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             return activities;
         }
 
-//        @Override
-//        protected void onPostExecute(AFActivity... activities) {
-//            updateUI(activities);
-//        }
+        @Override
+        protected void onPostExecute(ArrayList<AFActivity> activities) {
+            updateUI(activities);
+        }
 
         private URL createURL(String string) {
             URL url = null;
@@ -62,12 +69,11 @@ public class MainActivity extends AppCompatActivity {
                 url = new URL(string);
             } catch (MalformedURLException e) {
                 Log.e(LOG_TAG, "Error with creating URL", e);
-                return null;
             }
             return url;
         }
 
-        private String makeGET(URL url) throws IOException {
+        private String makeGET(URL url) {
             String response = "";
             HttpURLConnection urlConnection = null;
 
@@ -104,7 +110,11 @@ public class MainActivity extends AppCompatActivity {
 
             for (int i = 0; i < json.length(); i++) {
                 JSONObject activityJSON = json.getJSONObject(i);
-                Log.d(LOG_TAG, activityJSON.getString("title"));
+                AFActivity activity = new AFActivity(activityJSON.getString("title"),
+                        activityJSON.getJSONObject("actor").getString("displayName"),
+                        activityJSON.getJSONObject("object").getString("objectType"),
+                        activityJSON.getString("published"));
+                activities.add(activity);
             }
         }
     }
