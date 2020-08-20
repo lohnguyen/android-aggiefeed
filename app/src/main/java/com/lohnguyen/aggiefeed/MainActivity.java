@@ -26,10 +26,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    public static final String EXTRA_TITLE = "com.example.aggiefeed.TITLE";
-    public static final String EXTRA_DISPLAY_NAME = "com.example.aggiefeed.DISPLAY_NAME";
-    public static final String EXTRA_OBJECT_TYPE = "com.example.aggiefeed.OBJECT_TYPE";
-    public static final String EXTRA_PUBLISHED = "com.example.aggiefeed.PUBLISHED";
+    public static final String EXTRA_TITLE = "com.lohnguyen.aggiefeed.TITLE";
+    public static final String EXTRA_DISPLAY_NAME = "com.lohnguyen.aggiefeed.DISPLAY_NAME";
+    public static final String EXTRA_OBJECT_TYPE = "com.lohnguyen.aggiefeed.OBJECT_TYPE";
+    public static final String EXTRA_PUBLISHED = "com.lohnguyen.aggiefeed.PUBLISHED";
     private static final String AF_URL = "https://aggiefeed.ucdavis.edu/api/v1/activity/public?s=0?l=25";
 
     @Override
