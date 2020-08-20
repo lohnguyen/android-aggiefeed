@@ -24,8 +24,10 @@ public class AFActivityAdapter extends ArrayAdapter<AFActivity> {
 
         AFActivity activity = getItem(position);
         assert activity != null;
-        TextView titleView = (TextView) listItemView.findViewById(R.id.title);
+        TextView titleView = listItemView.findViewById(R.id.title);
+        TextView displayNameView = listItemView.findViewById(R.id.display_name);
         titleView.setText(activity.title);
+        displayNameView.setText(activity.displayName);
 
         return listItemView;
     }
