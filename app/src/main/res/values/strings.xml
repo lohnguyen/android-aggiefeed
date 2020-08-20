@@ -2,4 +2,7 @@
     <string name="app_name">AggieFeed</string>
     <string name="title">Title</string>
     <string name="display_name">Display Name</string>
+    <string name="object_type">Object Type</string>
+    <string name="published">Published</string>
+    <string name="back_button">Back</string>
 </resources>

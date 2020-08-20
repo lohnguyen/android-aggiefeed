@@ -2,9 +2,12 @@ package com.example.aggiefeed;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -23,6 +26,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    public static final String EXTRA_TITLE = "com.example.aggiefeed.TITLE";
+    public static final String EXTRA_DISPLAY_NAME = "com.example.aggiefeed.DISPLAY_NAME";
+    public static final String EXTRA_OBJECT_TYPE = "com.example.aggiefeed.OBJECT_TYPE";
+    public static final String EXTRA_PUBLISHED = "com.example.aggiefeed.PUBLISHED";
     private static final String AF_URL = "https://aggiefeed.ucdavis.edu/api/v1/activity/public?s=0?l=25";
 
     @Override
@@ -34,11 +41,23 @@ public class MainActivity extends AppCompatActivity {
         activityManager.execute();
     }
 
-    private void updateUI(ArrayList<AFActivity> activities) {
-        AFActivityAdapter flavorAdapter = new AFActivityAdapter(this, activities);
-
+    private void updateUI(final ArrayList<AFActivity> activities) {
+        final AFActivityAdapter activityAdapter = new AFActivityAdapter(this, activities);
         ListView listView = findViewById(R.id.list_view_activities);
-        listView.setAdapter(flavorAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView adapterView, View view, int position, long id) {
+                AFActivity activity = activityAdapter.getItem(position);
+                Intent intent = new Intent(view.getContext(), DetailActivity.class);
+
+                intent.putExtra(EXTRA_TITLE, activity.title);
+                intent.putExtra(EXTRA_DISPLAY_NAME, activity.displayName);
+                intent.putExtra(EXTRA_OBJECT_TYPE, activity.objectType);
+                intent.putExtra(EXTRA_PUBLISHED, activity.published);
+                startActivity(intent);
+            }
+        });
+        listView.setAdapter(activityAdapter);
     }
 
     private class AFActivityManager extends AsyncTask<URL, Void, ArrayList<AFActivity>> {
