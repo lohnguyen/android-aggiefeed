@@ -1,14 +1,22 @@
-package com.lohnguyen.aggiefeed;
+package com.lohnguyen.aggiefeed.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.lohnguyen.aggiefeed.models.AFActivity;
+import com.lohnguyen.aggiefeed.R;
+import com.lohnguyen.aggiefeed.adapters.AFActivityAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,8 +45,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AFActivityManager activityManager = new AFActivityManager();
-        activityManager.execute();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        AFActivityService activityService = new AFActivityService();
+        activityService.execute();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_more) {
+            Log.d(LOG_TAG, "more clicked.");
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void updateUI(final ArrayList<AFActivity> activities) {
@@ -60,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         listView.setAdapter(activityAdapter);
     }
 
-    private class AFActivityManager extends AsyncTask<URL, Void, ArrayList<AFActivity>> {
+    private class AFActivityService extends AsyncTask<URL, Void, ArrayList<AFActivity>> {
         @Override
         protected ArrayList<AFActivity> doInBackground(URL... urls) {
             URL url = createURL(AF_URL);
