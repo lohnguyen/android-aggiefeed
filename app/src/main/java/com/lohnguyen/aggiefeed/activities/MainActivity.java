@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_DISPLAY_NAME = "com.lohnguyen.aggiefeed.DISPLAY_NAME";
     public static final String EXTRA_OBJECT_TYPE = "com.lohnguyen.aggiefeed.OBJECT_TYPE";
     public static final String EXTRA_PUBLISHED = "com.lohnguyen.aggiefeed.PUBLISHED";
+    public static final String EXTRA_LOCATION = "com.lohnguyen.aggiefeed.LOCATION";
+    public static final String EXTRA_START_DATE = "com.lohnguyen.aggiefeed.START_DATE";
+    public static final String EXTRA_END_DATE = "com.lohnguyen.aggiefeed.END_DATE";
     private static final String AF_URL = "https://aggiefeed.ucdavis.edu/api/v1/activity/public?s=0?l=25";
 
     @Override
@@ -81,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(EXTRA_DISPLAY_NAME, activity.displayName);
                 intent.putExtra(EXTRA_OBJECT_TYPE, activity.objectType);
                 intent.putExtra(EXTRA_PUBLISHED, activity.published);
+                intent.putExtra(EXTRA_LOCATION, activity.location);
+                intent.putExtra(EXTRA_START_DATE, activity.startDate);
+                intent.putExtra(EXTRA_END_DATE, activity.endDate);
+
                 startActivity(intent);
             }
         });
@@ -156,10 +163,16 @@ public class MainActivity extends AppCompatActivity {
 
             for (int i = 0; i < json.length(); i++) {
                 JSONObject activityJSON = json.getJSONObject(i);
+                JSONObject object = activityJSON.getJSONObject("object");
+                JSONObject event = object.getJSONObject("ucdEdusModel").getJSONObject("event");
                 AFActivity activity = new AFActivity(activityJSON.getString("title"),
                         activityJSON.getJSONObject("actor").getString("displayName"),
-                        activityJSON.getJSONObject("object").getString("objectType"),
-                        activityJSON.getString("published"));
+                        object.getString("objectType"),
+                        activityJSON.getString("published"),
+                        event.getString("location"),
+                        event.getString("startDate"),
+                        event.getString("endDate"));
+
                 activities.add(activity);
             }
         }

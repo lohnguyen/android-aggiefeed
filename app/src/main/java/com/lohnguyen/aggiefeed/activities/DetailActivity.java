@@ -25,6 +25,9 @@ public class DetailActivity extends AppCompatActivity {
     private String displayName;
     private String objectType;
     private String published;
+    private String location;
+    private String startDate;
+    private String endDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +65,26 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_calendar) {
-            long begin = getUnixTime(this.published);
-            long end = begin + 5 * 60 * 60 * 1000;
-            addEvent(this.title, this.displayName, begin, end);
+            addEvent(this.title, this.location, getUnixTime(this.startDate), getUnixTime(this.endDate));
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void setAll(Intent intent) {
+        this.title = intent.getStringExtra(MainActivity.EXTRA_TITLE);
+        this.displayName = intent.getStringExtra(MainActivity.EXTRA_DISPLAY_NAME);
+        this.objectType = intent.getStringExtra(MainActivity.EXTRA_OBJECT_TYPE);
+        this.published = intent.getStringExtra(MainActivity.EXTRA_PUBLISHED);
+        this.location = intent.getStringExtra(MainActivity.EXTRA_LOCATION);
+        this.startDate = intent.getStringExtra(MainActivity.EXTRA_START_DATE);
+        this.endDate = intent.getStringExtra(MainActivity.EXTRA_END_DATE);
+    }
+
+    /*
+     * reference: parse string to Unix time
+     * https://stackoverflow.com/questions/3941357/iso-8601-string-to-date-time-object-in-android
+     */
     private long getUnixTime(String time) {
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
@@ -80,13 +95,6 @@ public class DetailActivity extends AppCompatActivity {
             e.printStackTrace();
             return -1;
         }
-    }
-
-    private void setAll(Intent intent) {
-        this.title = intent.getStringExtra(MainActivity.EXTRA_TITLE);
-        this.displayName = intent.getStringExtra(MainActivity.EXTRA_DISPLAY_NAME);
-        this.objectType = intent.getStringExtra(MainActivity.EXTRA_OBJECT_TYPE);
-        this.published = intent.getStringExtra(MainActivity.EXTRA_PUBLISHED);
     }
 
     public void addEvent(String title, String location, long begin, long end) {
