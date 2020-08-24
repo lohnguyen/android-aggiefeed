@@ -18,7 +18,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.lohnguyen.aggiefeed.activities.DetailActivity" />
+        <activity android:name="com.lohnguyen.aggiefeed.activities.DetailActivity"
+            android:parentActivityName="com.lohnguyen.aggiefeed.activities.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.lohnguyen.aggiefeed.activities.MainActivity" />
+        </activity>
 
     </application>
 
