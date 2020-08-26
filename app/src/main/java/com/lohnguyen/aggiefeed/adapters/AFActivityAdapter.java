@@ -7,13 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.lohnguyen.aggiefeed.models.AFActivity;
+import com.lohnguyen.aggiefeed.entities.AFActivity;
 import com.lohnguyen.aggiefeed.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class AFActivityAdapter extends ArrayAdapter<AFActivity> {
-    public AFActivityAdapter(Context context, ArrayList<AFActivity> androidFlavors) {
+    public AFActivityAdapter(Context context, List<AFActivity> androidFlavors) {
         super(context, 0, androidFlavors);
     }
 
@@ -29,8 +29,8 @@ public class AFActivityAdapter extends ArrayAdapter<AFActivity> {
         assert activity != null;
         TextView titleView = listItemView.findViewById(R.id.title);
         TextView displayNameView = listItemView.findViewById(R.id.display_name);
-        titleView.setText(activity.title);
-        displayNameView.setText(activity.displayName);
+        titleView.setText(activity.getTitle());
+        displayNameView.setText(activity.getDisplayName());
 
         return listItemView;
     }
