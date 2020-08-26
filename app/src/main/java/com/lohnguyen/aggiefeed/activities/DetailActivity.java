@@ -67,6 +67,9 @@ public class DetailActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.menu_calendar) {
             addEvent(this.title, this.location, getUnixTime(this.startDate), getUnixTime(this.endDate));
             return true;
+        } else if (item.getItemId() == R.id.menu_back) {
+            this.finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

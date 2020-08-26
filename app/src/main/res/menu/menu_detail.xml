@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_calendar_24"
         android:title="@string/menu_back"
         app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/menu_back"
+        android:icon="@drawable/ic_arrow_back_24"
+        android:title="@string/menu_back"
+        app:showAsAction="ifRoom" />
 </menu>

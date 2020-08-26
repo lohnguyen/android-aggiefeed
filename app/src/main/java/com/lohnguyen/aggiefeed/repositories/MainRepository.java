@@ -36,13 +36,14 @@ public class MainRepository {
         return allActivities;
     }
 
-    private void fetchAll(final Application application) {
+    public void fetchAll(final Application application) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(AF_URL, response -> {
             List<AFActivity> activities = new ArrayList<>();
             generateActivities(response, activities);
             deleteAll();
             insert(activities);
-        }, error -> Toast.makeText(application, "Unable to fetch new activities.", Toast.LENGTH_LONG).show());
+            Toast.makeText(application, "Successfully fetch activities.", Toast.LENGTH_LONG).show();
+        }, error -> Toast.makeText(application, "Unable to fetch activities.", Toast.LENGTH_LONG).show());
         AppVolleySingleton.getInstance(application).addToRequestQueue(jsonArrayRequest);
     }
 

@@ -24,4 +24,8 @@ public class MainViewModel extends AndroidViewModel {
     public LiveData<List<AFActivity>> getAll() {
         return allActivities;
     }
+
+    public void fetchAll() {
+        mainRepo.fetchAll(getApplication());
+    }
 }
