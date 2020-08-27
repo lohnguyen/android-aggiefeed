@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,7 +22,7 @@ import com.lohnguyen.aggiefeed.viewmodels.MainViewModel;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements FeedItemAdapter.OnFeedItemListener {
+public class MainActivity extends AppCompatActivity implements FeedItemAdapter.OnFeedItemListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     public static final String EXTRA_TITLE = "com.lohnguyen.aggiefeed.TITLE";
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
     private MainViewModel mainViewModel;
     private List<FeedItem> allFeedItems;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private FeedItemAdapter adapter;
 
@@ -46,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        swipeRefreshLayout = findViewById(R.id.swiperefresh_feeditems);
+        swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView = findViewById(R.id.recyclerview_feeditems);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -80,6 +84,12 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRefresh() {
+        mainViewModel.fetchAll();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
