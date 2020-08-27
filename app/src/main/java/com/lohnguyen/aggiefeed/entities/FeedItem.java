@@ -3,8 +3,8 @@ package com.lohnguyen.aggiefeed.entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "activity_table")
-public class AFActivity {
+@Entity(tableName = "feed_item_table")
+public class FeedItem {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -18,8 +18,8 @@ public class AFActivity {
     private String endDate;
     private String json;
 
-    public AFActivity(String title, String displayName, String objectType, String published,
-                      String location, String startDate, String endDate, String json) {
+    public FeedItem(String title, String displayName, String objectType, String published,
+                    String location, String startDate, String endDate, String json) {
         this.title = title;
         this.displayName = displayName;
         this.objectType = objectType;

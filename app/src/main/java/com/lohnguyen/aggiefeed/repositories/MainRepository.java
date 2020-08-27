@@ -1,16 +1,15 @@
 package com.lohnguyen.aggiefeed.repositories;
 
 import android.app.Application;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.lohnguyen.aggiefeed.daos.FeedItemDao;
 import com.lohnguyen.aggiefeed.room.AppRoomDatabase;
 import com.lohnguyen.aggiefeed.volley.AppVolleySingleton;
-import com.lohnguyen.aggiefeed.daos.AFActivityDao;
-import com.lohnguyen.aggiefeed.entities.AFActivity;
+import com.lohnguyen.aggiefeed.entities.FeedItem;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,43 +17,42 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public class MainRepository {
 
     private static final String AF_URL = "https://aggiefeed.ucdavis.edu/api/v1/activity/public?s=0?l=25";
 
-    private AFActivityDao activityDao;
-    private LiveData<List<AFActivity>> allActivities;
+    private FeedItemDao feedItemDao;
+    private LiveData<List<FeedItem>> allFeedItems;
 
     public MainRepository(Application application) {
         AppRoomDatabase db = AppRoomDatabase.getInstance(application);
-        activityDao = db.AFActivityDao();
-        allActivities = activityDao.getAll();
+        feedItemDao = db.AFActivityDao();
+        allFeedItems = feedItemDao.getAll();
         fetchAll(application);
     }
 
-    public LiveData<List<AFActivity>> getAll() {
-        return allActivities;
+    public LiveData<List<FeedItem>> getAll() {
+        return allFeedItems;
     }
 
     public void fetchAll(final Application application) {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(AF_URL, response -> {
-            List<AFActivity> activities = new ArrayList<>();
-            generateActivities(response, activities);
-            deleteAndInsert(activities);
+            List<FeedItem> feedItems = new ArrayList<>();
+            generateActivities(response, feedItems);
+            deleteAndInsert(feedItems);
             Toast.makeText(application, "Successfully fetch activities.", Toast.LENGTH_SHORT).show();
         }, error -> Toast.makeText(application, "Unable to fetch activities.", Toast.LENGTH_SHORT).show());
         AppVolleySingleton.getInstance(application).addToRequestQueue(jsonArrayRequest);
     }
 
-    private void generateActivities(JSONArray response, List<AFActivity> activities) {
+    private void generateActivities(JSONArray response, List<FeedItem> feedItems) {
         try {
             for (int i = 0; i < response.length(); i++) {
                 JSONObject activityJSON = response.getJSONObject(i);
                 JSONObject object = activityJSON.getJSONObject("object");
                 JSONObject event = object.getJSONObject("ucdEdusModel").getJSONObject("event");
-                AFActivity activity = new AFActivity(activityJSON.getString("title"),
+                FeedItem feedItem = new FeedItem(activityJSON.getString("title"),
                         activityJSON.getJSONObject("actor").getString("displayName"),
                         object.getString("objectType"),
                         activityJSON.getString("published"),
@@ -62,22 +60,22 @@ public class MainRepository {
                         event.getString("startDate"),
                         event.getString("endDate"),
                         activityJSON.toString());
-                activities.add(activity);
+                feedItems.add(feedItem);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public void insert(AFActivity activity) {
+    public void insert(FeedItem feedItem) {
         AppRoomDatabase.databaseWriteExecutor.execute(() -> {
-            activityDao.insert(activity);
+            feedItemDao.insert(feedItem);
         });
     }
 
-    public void deleteAndInsert(List<AFActivity> activities) {
+    public void deleteAndInsert(List<FeedItem> feedItems) {
         AppRoomDatabase.databaseWriteExecutor.execute(() -> {
-            activityDao.deleteAndInsert(activities);
+            feedItemDao.deleteAndInsert(feedItems);
         });
     }
 }

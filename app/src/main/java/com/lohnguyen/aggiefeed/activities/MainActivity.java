@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,9 +15,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.lohnguyen.aggiefeed.entities.AFActivity;
+import com.lohnguyen.aggiefeed.entities.FeedItem;
 import com.lohnguyen.aggiefeed.R;
-import com.lohnguyen.aggiefeed.adapters.AFActivityAdapter;
+import com.lohnguyen.aggiefeed.adapters.FeedItemAdapter;
 import com.lohnguyen.aggiefeed.viewmodels.MainViewModel;
 
 import java.util.List;
@@ -45,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        mainViewModel.getAll().observe(this, new Observer<List<AFActivity>>() {
+        mainViewModel.getAll().observe(this, new Observer<List<FeedItem>>() {
             @Override
-            public void onChanged(@Nullable final List<AFActivity> allActivities) {
+            public void onChanged(@Nullable final List<FeedItem> allActivities) {
                 updateUI(allActivities);
             }
         });
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             mainViewModel.fetchAll();
             return true;
         } else if (item.getItemId() == R.id.menu_add) {
-            AFActivity activity = new AFActivity("Test", "Test", "Test",
+            FeedItem activity = new FeedItem("Test", "Test", "Test",
                     "Test", "Test", "Test", "Test", "Test");
             mainViewModel.insert(activity);
             return true;
@@ -74,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateUI(final List<AFActivity> activities) {
-        final AFActivityAdapter activityAdapter = new AFActivityAdapter(this, activities);
+    private void updateUI(final List<FeedItem> activities) {
+        final FeedItemAdapter activityAdapter = new FeedItemAdapter(this, activities);
         ListView listView = findViewById(R.id.list_view_activities);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView adapterView, View view, int position, long id) {
-                AFActivity activity = activityAdapter.getItem(position);
+                FeedItem activity = activityAdapter.getItem(position);
                 Intent intent = new Intent(view.getContext(), DetailActivity.class);
 
                 assert activity != null;
