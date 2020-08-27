@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
                 updateUI(allActivities);
             }
         });
-        Log.d(LOG_TAG, "onCreate");
     }
 
     @Override
@@ -65,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_refresh) {
             mainViewModel.fetchAll();
+            return true;
+        } else if (item.getItemId() == R.id.menu_add) {
+            AFActivity activity = new AFActivity("Test", "Test", "Test",
+                    "Test", "Test", "Test", "Test", "Test");
+            mainViewModel.insert(activity);
             return true;
         }
         return super.onOptionsItemSelected(item);

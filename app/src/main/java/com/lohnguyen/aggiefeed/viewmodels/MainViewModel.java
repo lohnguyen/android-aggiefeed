@@ -1,6 +1,7 @@
 package com.lohnguyen.aggiefeed.viewmodels;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -27,5 +28,10 @@ public class MainViewModel extends AndroidViewModel {
 
     public void fetchAll() {
         mainRepo.fetchAll(getApplication());
+    }
+
+    public void insert(AFActivity activity) {
+        mainRepo.insert(activity);
+        Toast.makeText(getApplication(), "Successfully add activity.", Toast.LENGTH_SHORT).show();
     }
 }

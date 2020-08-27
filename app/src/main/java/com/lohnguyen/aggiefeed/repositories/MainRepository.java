@@ -1,6 +1,7 @@
 package com.lohnguyen.aggiefeed.repositories;
 
 import android.app.Application;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class MainRepository {
 
@@ -40,10 +42,9 @@ public class MainRepository {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(AF_URL, response -> {
             List<AFActivity> activities = new ArrayList<>();
             generateActivities(response, activities);
-            deleteAll();
-            insert(activities);
-            Toast.makeText(application, "Successfully fetch activities.", Toast.LENGTH_LONG).show();
-        }, error -> Toast.makeText(application, "Unable to fetch activities.", Toast.LENGTH_LONG).show());
+            deleteAndInsert(activities);
+            Toast.makeText(application, "Successfully fetch activities.", Toast.LENGTH_SHORT).show();
+        }, error -> Toast.makeText(application, "Unable to fetch activities.", Toast.LENGTH_SHORT).show());
         AppVolleySingleton.getInstance(application).addToRequestQueue(jsonArrayRequest);
     }
 
@@ -68,15 +69,15 @@ public class MainRepository {
         }
     }
 
-    public void insert(List<AFActivity> activities) {
+    public void insert(AFActivity activity) {
         AppRoomDatabase.databaseWriteExecutor.execute(() -> {
-            activityDao.insert(activities);
+            activityDao.insert(activity);
         });
     }
 
-    public void deleteAll() {
+    public void deleteAndInsert(List<AFActivity> activities) {
         AppRoomDatabase.databaseWriteExecutor.execute(() -> {
-            activityDao.deleteAll();
+            activityDao.deleteAndInsert(activities);
         });
     }
 }
