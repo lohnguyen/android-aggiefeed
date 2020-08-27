@@ -5,15 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.lohnguyen.aggiefeed.entities.FeedItem;
 import com.lohnguyen.aggiefeed.R;
@@ -22,7 +21,7 @@ import com.lohnguyen.aggiefeed.viewmodels.MainViewModel;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FeedItemAdapter.OnFeedItemListener {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     public static final String EXTRA_TITLE = "com.lohnguyen.aggiefeed.TITLE";
@@ -34,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_END_DATE = "com.lohnguyen.aggiefeed.END_DATE";
 
     private MainViewModel mainViewModel;
+    private List<FeedItem> allFeedItems;
+
+    private RecyclerView recyclerView;
+    private FeedItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +46,17 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        recyclerView = findViewById(R.id.recyclerview_feeditems);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mainViewModel.getAll().observe(this, new Observer<List<FeedItem>>() {
             @Override
-            public void onChanged(@Nullable final List<FeedItem> allActivities) {
-                updateUI(allActivities);
+            public void onChanged(@Nullable final List<FeedItem> feedItems) {
+                allFeedItems = feedItems;
+                adapter = new FeedItemAdapter(allFeedItems, MainActivity.this);
+                recyclerView.setAdapter(adapter);
             }
         });
     }
@@ -73,27 +82,20 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void updateUI(final List<FeedItem> activities) {
-        final FeedItemAdapter activityAdapter = new FeedItemAdapter(this, activities);
-        ListView listView = findViewById(R.id.list_view_activities);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView adapterView, View view, int position, long id) {
-                FeedItem activity = activityAdapter.getItem(position);
-                Intent intent = new Intent(view.getContext(), DetailActivity.class);
+    @Override
+    public void onFeedItemClick(int position) {
+        FeedItem feedItem = allFeedItems.get(position);
+        Intent intent = new Intent(this, DetailActivity.class);
 
-                assert activity != null;
-                intent.putExtra(EXTRA_TITLE, activity.getTitle());
-                intent.putExtra(EXTRA_DISPLAY_NAME, activity.getDisplayName());
-                intent.putExtra(EXTRA_OBJECT_TYPE, activity.getObjectType());
-                intent.putExtra(EXTRA_PUBLISHED, activity.getPublished());
-                intent.putExtra(EXTRA_LOCATION, activity.getLocation());
-                intent.putExtra(EXTRA_START_DATE, activity.getStartDate());
-                intent.putExtra(EXTRA_END_DATE, activity.getEndDate());
+        assert feedItem != null;
+        intent.putExtra(EXTRA_TITLE, feedItem.getTitle());
+        intent.putExtra(EXTRA_DISPLAY_NAME, feedItem.getDisplayName());
+        intent.putExtra(EXTRA_OBJECT_TYPE, feedItem.getObjectType());
+        intent.putExtra(EXTRA_PUBLISHED, feedItem.getPublished());
+        intent.putExtra(EXTRA_LOCATION, feedItem.getLocation());
+        intent.putExtra(EXTRA_START_DATE, feedItem.getStartDate());
+        intent.putExtra(EXTRA_END_DATE, feedItem.getEndDate());
 
-                startActivity(intent);
-            }
-        });
-        listView.setAdapter(activityAdapter);
+        startActivity(intent);
     }
 }
