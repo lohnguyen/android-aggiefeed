@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity {
+
     private String title;
     private String displayName;
     private String objectType;
@@ -59,6 +60,12 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_detail, menu);
+
+        if (!this.objectType.equals("event")) {
+            MenuItem item = menu.findItem(R.id.menu_calendar);
+            item.setVisible(false);
+        }
+
         return true;
     }
 

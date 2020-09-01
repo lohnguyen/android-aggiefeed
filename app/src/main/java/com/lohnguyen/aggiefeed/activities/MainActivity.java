@@ -24,7 +24,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements FeedItemAdapter.OnFeedItemListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String LOG_TAG = MainActivity.class.getSimpleName();
     public static final String EXTRA_TITLE = "com.lohnguyen.aggiefeed.TITLE";
     public static final String EXTRA_DISPLAY_NAME = "com.lohnguyen.aggiefeed.DISPLAY_NAME";
     public static final String EXTRA_OBJECT_TYPE = "com.lohnguyen.aggiefeed.OBJECT_TYPE";
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private FeedItemAdapter adapter;
+    private FeedItemAdapter adapter = new FeedItemAdapter(allFeedItems, MainActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +49,18 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
 
         swipeRefreshLayout = findViewById(R.id.swiperefresh_feeditems);
         swipeRefreshLayout.setOnRefreshListener(this);
+
         recyclerView = findViewById(R.id.recyclerview_feeditems);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mainViewModel.getAll().observe(this, new Observer<List<FeedItem>>() {
             @Override
             public void onChanged(@Nullable final List<FeedItem> feedItems) {
                 allFeedItems = feedItems;
-                adapter = new FeedItemAdapter(allFeedItems, MainActivity.this);
+                adapter.setFeedItems(allFeedItems);
                 recyclerView.setAdapter(adapter);
             }
         });
@@ -88,8 +89,7 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
 
     @Override
     public void onRefresh() {
-        mainViewModel.fetchAll();
-        swipeRefreshLayout.setRefreshing(false);
+        mainViewModel.refresh(swipeRefreshLayout);
     }
 
     @Override

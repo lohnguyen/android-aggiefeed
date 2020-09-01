@@ -34,7 +34,7 @@ public abstract class FeedItemDao {
     public abstract LiveData<List<FeedItem>> getAll();
 
     @Transaction
-    public void deleteAndInsert(List<FeedItem> feedItems) {
+    public void deleteAllAndInsert(List<FeedItem> feedItems) {
         deleteAll();
         insert(feedItems);
     }

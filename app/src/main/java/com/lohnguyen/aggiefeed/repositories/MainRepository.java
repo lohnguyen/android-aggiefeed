@@ -1,6 +1,7 @@
 package com.lohnguyen.aggiefeed.repositories;
 
 import android.app.Application;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
@@ -51,19 +52,26 @@ public class MainRepository {
             for (int i = 0; i < response.length(); i++) {
                 JSONObject activityJSON = response.getJSONObject(i);
                 JSONObject object = activityJSON.getJSONObject("object");
-                JSONObject event = object.getJSONObject("ucdEdusModel").getJSONObject("event");
-                FeedItem feedItem = new FeedItem(activityJSON.getString("title"),
+                String location = null, startDate = null, endDate = null;
+
+                if (object.getString("objectType").equals("event")) {
+                    JSONObject event = object.getJSONObject("ucdEdusModel").getJSONObject("event");
+                    location = event.getString("location");
+                    startDate = event.getString("startDate");
+                    endDate = event.getString("endDate");
+                }
+
+                feedItems.add(new FeedItem(activityJSON.getString("title"),
                         activityJSON.getJSONObject("actor").getString("displayName"),
                         object.getString("objectType"),
                         activityJSON.getString("published"),
-                        event.getString("location"),
-                        event.getString("startDate"),
-                        event.getString("endDate"),
-                        activityJSON.toString());
-                feedItems.add(feedItem);
+                        location,
+                        startDate,
+                        endDate,
+                        activityJSON.toString()));
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 
@@ -75,7 +83,7 @@ public class MainRepository {
 
     public void deleteAndInsert(List<FeedItem> feedItems) {
         AppRoomDatabase.databaseWriteExecutor.execute(() -> {
-            feedItemDao.deleteAndInsert(feedItems);
+            feedItemDao.deleteAllAndInsert(feedItems);
         });
     }
 }

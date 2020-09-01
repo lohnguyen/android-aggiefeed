@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.lohnguyen.aggiefeed.entities.FeedItem;
 import com.lohnguyen.aggiefeed.repositories.MainRepository;
@@ -28,6 +29,11 @@ public class MainViewModel extends AndroidViewModel {
 
     public void fetchAll() {
         mainRepo.fetchAll(getApplication());
+    }
+
+    public void refresh(SwipeRefreshLayout swipeRefreshLayout) {
+        fetchAll();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     public void insert(FeedItem feedItem) {

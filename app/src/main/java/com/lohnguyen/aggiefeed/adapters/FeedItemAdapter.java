@@ -1,6 +1,5 @@
 package com.lohnguyen.aggiefeed.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +23,16 @@ public class FeedItemAdapter extends RecyclerView.Adapter<FeedItemAdapter.ViewHo
         this.onFeedItemListener = onFeedItemListener;
     }
 
+    public void setFeedItems(List<FeedItem> feedItems) {
+        this.feedItems = feedItems;
+        this.notifyDataSetChanged();
+    }
+
     public interface OnFeedItemListener {
         void onFeedItemClick(int position);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView titleView;
         TextView displayNameView;

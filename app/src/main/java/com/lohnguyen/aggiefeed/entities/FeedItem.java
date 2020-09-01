@@ -1,5 +1,6 @@
 package com.lohnguyen.aggiefeed.entities;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -13,13 +14,17 @@ public class FeedItem {
     private String displayName;
     private String objectType;
     private String published;
-    private String location;
-    private String startDate;
-    private String endDate;
     private String json;
 
+    @Nullable
+    private String location;
+    @Nullable
+    private String startDate;
+    @Nullable
+    private String endDate;
+
     public FeedItem(String title, String displayName, String objectType, String published,
-                    String location, String startDate, String endDate, String json) {
+                    @Nullable String location, @Nullable String startDate, @Nullable String endDate, String json) {
         this.title = title;
         this.displayName = displayName;
         this.objectType = objectType;
@@ -54,19 +59,22 @@ public class FeedItem {
         return published;
     }
 
+    public String getJson() {
+        return json;
+    }
+
+    @Nullable
     public String getLocation() {
         return location;
     }
 
+    @Nullable
     public String getStartDate() {
         return startDate;
     }
 
+    @Nullable
     public String getEndDate() {
         return endDate;
-    }
-
-    public String getJson() {
-        return json;
     }
 }
