@@ -40,4 +40,10 @@ public class MainViewModel extends AndroidViewModel {
         mainRepo.insert(feedItem);
         Toast.makeText(getApplication(), "Successfully add activity.", Toast.LENGTH_SHORT).show();
     }
+
+    public void insertTest() {
+        FeedItem activity = new FeedItem("Test", "Test", "Test",
+                "Test", "Test", "Test", "Test", "Test");
+        insert(activity);
+    }
 }

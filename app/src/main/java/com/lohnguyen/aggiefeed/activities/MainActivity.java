@@ -79,9 +79,7 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
             mainViewModel.fetchAll();
             return true;
         } else if (item.getItemId() == R.id.menu_add) {
-            FeedItem activity = new FeedItem("Test", "Test", "Test",
-                    "Test", "Test", "Test", "Test", "Test");
-            mainViewModel.insert(activity);
+            mainViewModel.insertTest();
             return true;
         }
         return super.onOptionsItemSelected(item);
