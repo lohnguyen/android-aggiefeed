@@ -31,6 +31,8 @@ dependencies {
     def coreTestingVersion = "2.1.0"
     def roomVersion = "2.2.5"
     def volleyVersion = "1.1.1"
+    def rxJavaVersion = "3.0.6"
+    def rxBindingVersion = "4.0.0"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -52,4 +54,7 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$roomVersion"
 
     androidTestImplementation "androidx.arch.core:core-testing:$coreTestingVersion"
+
+    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+    implementation "com.jakewharton.rxbinding4:rxbinding:$rxBindingVersion"
 }
