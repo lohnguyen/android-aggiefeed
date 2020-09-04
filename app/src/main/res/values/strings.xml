@@ -8,4 +8,5 @@
     <string name="menu_more">More</string>
     <string name="menu_back">Back</string>
     <string name="menu_search">Search</string>
+    <string name="search_hint">Search Here</string>
 </resources>

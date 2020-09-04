@@ -4,22 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.MenuItemCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 
 import com.lohnguyen.aggiefeed.entities.FeedItem;
@@ -54,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
-    private FeedItemAdapter adapter = new FeedItemAdapter(allFeedItems, MainActivity.this);
+    private FeedItemAdapter adapter = new FeedItemAdapter(MainActivity.this);
 
     private CompositeDisposable disposables = new CompositeDisposable();
 
@@ -76,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mainViewModel.getAll().observe(this, feedItems -> {
             allFeedItems = feedItems;
-            adapter.setFeedItems(allFeedItems);
+            adapter.setSearchFeedItems(allFeedItems);
             recyclerView.setAdapter(adapter);
         });
     }
@@ -145,12 +139,11 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
         ImageView searchIcon = (ImageView)searchView.findViewById(androidx.appcompat.R.id.search_button);
         searchIcon.setImageResource(R.drawable.ic_search_24);
 
-//        ImageView searchMagIcon = (ImageView)searchView.findViewById(androidx.appcompat.R.id.search_mag_icon);
-//        searchMagIcon.setImageResource(R.drawable.ic_search_24);
+        ImageView searchMagIcon = (ImageView)searchView.findViewById(androidx.appcompat.R.id.search_voice_btn);
+        searchMagIcon.setImageResource(R.drawable.ic_keyboard_voice_24);
 
         RxSearchObservable.fromView(searchView)
-                .debounce(1000, TimeUnit.MILLISECONDS)
-                .filter(text -> !text.isEmpty() && text.length() >= 3)
+                .debounce(500, TimeUnit.MILLISECONDS)
                 .map(text -> text.toLowerCase().trim())
                 .distinctUntilChanged()
                 .subscribeOn(Schedulers.io())
@@ -163,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
 
                     @Override
                     public void onNext(@NonNull String s) {
-                        Log.e("howdy", s);
+                        adapter.getFilter().filter(s);
                     }
 
                     @Override
