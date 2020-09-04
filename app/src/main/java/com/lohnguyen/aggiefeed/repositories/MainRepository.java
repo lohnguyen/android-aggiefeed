@@ -1,6 +1,7 @@
 package com.lohnguyen.aggiefeed.repositories;
 
 import android.app.Application;
+import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -47,6 +48,14 @@ public class MainRepository {
         AppVolleySingleton.getInstance(application).addToRequestQueue(jsonArrayRequest);
     }
 
+    /*
+     * reference: parse HTML encoding
+     * https://stackoverflow.com/questions/2918920/decode-html-entities-in-android
+     */
+    private String decodeHTML(String htmlStr) {
+        return Html.fromHtml(htmlStr, Html.FROM_HTML_MODE_LEGACY).toString();
+    }
+
     private void generateActivities(JSONArray response, List<FeedItem> feedItems) {
         try {
             for (int i = 0; i < response.length(); i++) {
@@ -61,7 +70,7 @@ public class MainRepository {
                     endDate = event.getString("endDate");
                 }
 
-                feedItems.add(new FeedItem(activityJSON.getString("title"),
+                feedItems.add(new FeedItem(decodeHTML(activityJSON.getString("title")),
                         activityJSON.getJSONObject("actor").getString("displayName"),
                         object.getString("objectType"),
                         activityJSON.getString("published"),
