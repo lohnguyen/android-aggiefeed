@@ -31,11 +31,6 @@ public class MainViewModel extends AndroidViewModel {
         mainRepo.fetchAll(getApplication());
     }
 
-    public void refresh(SwipeRefreshLayout swipeRefreshLayout) {
-        fetchAll();
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
     public void insert(FeedItem feedItem) {
         mainRepo.insert(feedItem);
         Toast.makeText(getApplication(), "Successfully add activity.", Toast.LENGTH_SHORT).show();

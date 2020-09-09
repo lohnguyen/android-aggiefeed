@@ -96,7 +96,8 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
 
     @Override
     public void onRefresh() {
-        mainViewModel.refresh(swipeRefreshLayout);
+        mainViewModel.fetchAll();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
