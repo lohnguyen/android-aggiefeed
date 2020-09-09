@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
     private List<FeedItem> allFeedItems;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+    private Boolean refreshing = false;
     private RecyclerView recyclerView;
     private FeedItemAdapter adapter = new FeedItemAdapter(MainActivity.this);
 
@@ -72,6 +73,12 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
             allFeedItems = feedItems;
             adapter.setSearchFeedItems(allFeedItems);
             recyclerView.setAdapter(adapter);
+
+            //  Set refresh icon to false
+            if (refreshing) {
+                swipeRefreshLayout.setRefreshing(false);
+                refreshing = false;
+            }
         });
     }
 
@@ -97,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
     @Override
     public void onRefresh() {
         mainViewModel.fetchAll();
-        swipeRefreshLayout.setRefreshing(false);
+        refreshing = true;
     }
 
     @Override
