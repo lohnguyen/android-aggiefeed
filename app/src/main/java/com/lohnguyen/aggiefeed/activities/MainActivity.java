@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements FeedItemAdapter.O
                 swipeRefreshLayout.setRefreshing(false);
                 refreshing = false;
             }
+
+            Log.e("howdy", "dataChagned " + feedItems.size());
         });
     }
 

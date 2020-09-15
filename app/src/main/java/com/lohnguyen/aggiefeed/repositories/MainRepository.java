@@ -25,17 +25,15 @@ public class MainRepository {
     private static final String AF_URL = "https://aggiefeed.ucdavis.edu/api/v1/activity/public?s=0?l=25";
 
     private FeedItemDao feedItemDao;
-    private LiveData<List<FeedItem>> allFeedItems;
 
     public MainRepository(Application application) {
         AppRoomDatabase db = AppRoomDatabase.getInstance(application);
         feedItemDao = db.AFActivityDao();
-        allFeedItems = feedItemDao.getAll();
         fetchAll(application);
     }
 
     public LiveData<List<FeedItem>> getAll() {
-        return allFeedItems;
+        return feedItemDao.getAll();
     }
 
     public void fetchAll(final Application application) {
