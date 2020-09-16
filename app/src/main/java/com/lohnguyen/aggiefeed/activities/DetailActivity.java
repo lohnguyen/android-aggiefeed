@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.lohnguyen.aggiefeed.R;
+import com.lohnguyen.aggiefeed.fragments.FeedListFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -79,13 +80,13 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void setAll(Intent intent) {
-        this.title = intent.getStringExtra(MainActivity.EXTRA_TITLE);
-        this.displayName = intent.getStringExtra(MainActivity.EXTRA_DISPLAY_NAME);
-        this.objectType = intent.getStringExtra(MainActivity.EXTRA_OBJECT_TYPE);
-        this.published = intent.getStringExtra(MainActivity.EXTRA_PUBLISHED);
-        this.location = intent.getStringExtra(MainActivity.EXTRA_LOCATION);
-        this.startDate = intent.getStringExtra(MainActivity.EXTRA_START_DATE);
-        this.endDate = intent.getStringExtra(MainActivity.EXTRA_END_DATE);
+        this.title = intent.getStringExtra(FeedListFragment.EXTRA_TITLE);
+        this.displayName = intent.getStringExtra(FeedListFragment.EXTRA_DISPLAY_NAME);
+        this.objectType = intent.getStringExtra(FeedListFragment.EXTRA_OBJECT_TYPE);
+        this.published = intent.getStringExtra(FeedListFragment.EXTRA_PUBLISHED);
+        this.location = intent.getStringExtra(FeedListFragment.EXTRA_LOCATION);
+        this.startDate = intent.getStringExtra(FeedListFragment.EXTRA_START_DATE);
+        this.endDate = intent.getStringExtra(FeedListFragment.EXTRA_END_DATE);
     }
 
     /*

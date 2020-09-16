@@ -16,13 +16,13 @@ import com.lohnguyen.aggiefeed.entities.FeedItem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedItemAdapter extends RecyclerView.Adapter<FeedItemAdapter.ViewHolder> implements Filterable {
+public class FeedListAdapter extends RecyclerView.Adapter<FeedListAdapter.ViewHolder> implements Filterable {
 
     private List<FeedItem> allFeedItems;
     private List<FeedItem> searchFeedItems;
     private OnFeedItemListener onFeedItemListener;
 
-    public FeedItemAdapter(OnFeedItemListener onFeedItemListener) {
+    public FeedListAdapter(OnFeedItemListener onFeedItemListener) {
         this.onFeedItemListener = onFeedItemListener;
     }
 
@@ -59,13 +59,13 @@ public class FeedItemAdapter extends RecyclerView.Adapter<FeedItemAdapter.ViewHo
 
     @NonNull
     @Override
-    public FeedItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FeedListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
         return new ViewHolder(view, onFeedItemListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FeedItemAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FeedListAdapter.ViewHolder holder, int position) {
         FeedItem feedItem = searchFeedItems.get(position);
         holder.titleView.setText(feedItem.getTitle());
         holder.displayNameView.setText(feedItem.getDisplayName());

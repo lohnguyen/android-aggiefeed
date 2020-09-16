@@ -20,20 +20,23 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainRepository {
+public class FeedListRepository {
 
     private static final String AF_URL = "https://aggiefeed.ucdavis.edu/api/v1/activity/public?s=0?l=25";
 
     private FeedItemDao feedItemDao;
 
-    public MainRepository(Application application) {
+    public FeedListRepository(Application application) {
         AppRoomDatabase db = AppRoomDatabase.getInstance(application);
         feedItemDao = db.AFActivityDao();
-        fetchAll(application);
     }
 
     public LiveData<List<FeedItem>> getAll() {
         return feedItemDao.getAll();
+    }
+
+    public LiveData<List<FeedItem>> getHappeningTodayFeedItems(String displayName) {
+        return feedItemDao.getHappeningTodayFeedItems(displayName);
     }
 
     public void fetchAll(final Application application) {

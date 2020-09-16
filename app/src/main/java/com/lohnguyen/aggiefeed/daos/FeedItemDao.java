@@ -33,6 +33,9 @@ public abstract class FeedItemDao {
     @Query("SELECT * FROM feed_item_table")
     public abstract LiveData<List<FeedItem>> getAll();
 
+    @Query("SELECT * FROM feed_item_table WHERE displayName LIKE :displayName")
+    public abstract LiveData<List<FeedItem>> getHappeningTodayFeedItems(String displayName);
+
     @Transaction
     public void deleteAllAndInsert(List<FeedItem> feedItems) {
         deleteAll();
