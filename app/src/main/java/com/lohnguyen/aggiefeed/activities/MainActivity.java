@@ -28,11 +28,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-//            FeedPagerFragment feedPagerFragment = new FeedPagerFragment();
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.feed_pager_container, feedPagerFragment)
-//                    .commit();
-
             NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
             assert navHostFragment != null;
             NavController navController = navHostFragment.getNavController();
