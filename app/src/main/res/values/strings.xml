@@ -10,4 +10,5 @@
     <string name="menu_search">Search</string>
     <string name="search_hint">Search Here</string>
     <string name="lorem_ipsum">Lorem Ipsum</string>
+    <string name="bus_fragment">Bus Fragment</string>
 </resources>

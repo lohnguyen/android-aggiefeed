@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    android:label="fragment_feed_pager"
+    app:startDestination="@id/feedPagerFragment">
+    <fragment
+        android:id="@+id/feedPagerFragment"
+        android:name="com.lohnguyen.aggiefeed.fragments.FeedPagerFragment"
+        android:label="FeedPagerFragment" />
+    <fragment
+        android:id="@+id/busFragment"
+        android:name="com.lohnguyen.aggiefeed.fragments.BusFragment"
+        android:label="BusFragment" />
+</navigation>

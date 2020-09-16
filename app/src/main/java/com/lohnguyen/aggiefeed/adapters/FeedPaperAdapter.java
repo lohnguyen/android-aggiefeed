@@ -22,7 +22,7 @@ public class FeedPaperAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public FeedListFragment createFragment(int position) {
-        Log.e("feedPagerAdapter", "createFragment: ");
+        Log.e("feedPagerAdapter", "createFragment " + position);
         return feedListFragments.get(position);
     }
 

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: "androidx.navigation.safeargs"
 
 android {
     compileSdkVersion 30
@@ -35,6 +36,7 @@ dependencies {
     def volleyVersion = "1.1.1"
     def rxJavaVersion = "3.0.6"
     def rxBindingVersion = "4.0.0"
+    def navVersion = "2.3.0"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -59,4 +61,7 @@ dependencies {
 
     implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
     implementation "com.jakewharton.rxbinding4:rxbinding:$rxBindingVersion"
+
+    implementation "androidx.navigation:navigation-fragment:$navVersion"
+    implementation "androidx.navigation:navigation-ui:$navVersion"
 }

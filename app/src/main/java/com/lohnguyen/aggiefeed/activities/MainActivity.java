@@ -3,7 +3,10 @@ package com.lohnguyen.aggiefeed.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,10 +28,14 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            FeedPagerFragment feedPagerFragment = new FeedPagerFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.feed_pager_container, feedPagerFragment)
-                    .commit();
+//            FeedPagerFragment feedPagerFragment = new FeedPagerFragment();
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.feed_pager_container, feedPagerFragment)
+//                    .commit();
+
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            assert navHostFragment != null;
+            NavController navController = navHostFragment.getNavController();
         }
 
         feedListViewModel = new ViewModelProvider(this).get(FeedListViewModel.class);
