@@ -9,12 +9,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.lohnguyen.aggiefeed.R;
 import com.lohnguyen.aggiefeed.adapters.FeedPaperAdapter;
+import com.lohnguyen.aggiefeed.viewmodels.FeedListViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,12 +25,15 @@ import java.util.List;
 public class FeedPagerFragment extends Fragment {
 
     ViewPager2 viewPager;
+    FeedListViewModel feedListViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Log.e("feedPager", "pager created");
 
         super.onCreate(savedInstanceState);
+
+        feedListViewModel = new ViewModelProvider(this).get(FeedListViewModel.class);
     }
 
     @Nullable
@@ -41,6 +46,8 @@ public class FeedPagerFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        feedListViewModel.fetchAll();
+
         List<FeedListFragment> feedListFragments = new ArrayList<>();
         feedListFragments.add(FeedListFragment.newInstance());
         feedListFragments.add(FeedListFragment.newInstance(true));
@@ -51,8 +58,6 @@ public class FeedPagerFragment extends Fragment {
         viewPager.setAdapter(new FeedPaperAdapter(getActivity(), feedListFragments));
 
         TabLayout tabLayout = view.findViewById(R.id.feed_tab_layout);
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> tab.setText(tabTitles.get(position))
-        ).attach();
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabTitles.get(position))).attach();
     }
 }

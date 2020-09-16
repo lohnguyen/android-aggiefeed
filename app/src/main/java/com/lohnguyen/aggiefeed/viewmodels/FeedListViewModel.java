@@ -18,7 +18,6 @@ public class FeedListViewModel extends AndroidViewModel {
     public FeedListViewModel(Application application) {
         super(application);
         repo = new FeedListRepository(application);
-        repo.fetchAll(application); // fetch from server when app is first launched
     }
 
     public LiveData<List<FeedItem>> getAll() {
