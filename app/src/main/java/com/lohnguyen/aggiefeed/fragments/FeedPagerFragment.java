@@ -11,12 +11,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.lohnguyen.aggiefeed.R;
 import com.lohnguyen.aggiefeed.adapters.FeedPaperAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class FeedPagerFragment extends Fragment {
 
@@ -43,7 +45,14 @@ public class FeedPagerFragment extends Fragment {
         feedListFragments.add(FeedListFragment.newInstance());
         feedListFragments.add(FeedListFragment.newInstance(true));
 
+        List<String> tabTitles = Arrays.asList("Feed", "Happening Today");
+
         viewPager = view.findViewById(R.id.feed_view_pager);
         viewPager.setAdapter(new FeedPaperAdapter(getActivity(), feedListFragments));
+
+        TabLayout tabLayout = view.findViewById(R.id.feed_tab_layout);
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> tab.setText(tabTitles.get(position))
+        ).attach();
     }
 }
