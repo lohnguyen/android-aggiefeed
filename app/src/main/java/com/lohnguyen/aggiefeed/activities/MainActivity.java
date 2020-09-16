@@ -3,24 +3,28 @@ package com.lohnguyen.aggiefeed.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.lohnguyen.aggiefeed.R;
+import com.lohnguyen.aggiefeed.fragments.BusFragment;
+import com.lohnguyen.aggiefeed.fragments.FeedPagerFragment;
 import com.lohnguyen.aggiefeed.viewmodels.FeedListViewModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+
+    private final FeedPagerFragment feedPagerFragment = new FeedPagerFragment();;
+    private final BusFragment busFragment = new BusFragment();
+    FragmentManager fragmentManger = getSupportFragmentManager();
+    Fragment activeFragment = feedPagerFragment;
 
     FeedListViewModel feedListViewModel;
-    NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +35,24 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
-            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-            assert navHostFragment != null;
-            navController = navHostFragment.getNavController();
             BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-            NavigationUI.setupWithNavController(bottomNavigationView, navController);
+            bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+            setUpFragments();
         }
 
         feedListViewModel = new ViewModelProvider(this).get(FeedListViewModel.class);
+    }
+
+    private void setUpFragments() {
+        fragmentManger.beginTransaction()
+                .add(R.id.fragment_container, feedPagerFragment)
+                .commit();
+
+        fragmentManger.beginTransaction()
+                .add(R.id.fragment_container, busFragment)
+                .hide(busFragment)
+                .commit();
     }
 
     @Override
@@ -59,26 +73,23 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//        // update the main content by replacing fragments
-//        int menuItemID = menuItem.getItemId();
-//        // handles clicks for the bottom navigation bar
-//        switch (menuItemID) {
-//            case R.id.bottom_action_bus:
-//                navController.navigate(
-//                        NavGraphDirections
-//                                .actionGlobalBusTabFragment()
-//                );
-//                break;
-//
-//            case R.id.bottom_action_feed:
-//                navController.navigate(
-//                        NavGraphDirections
-//                                .actionGlobalFeed()
-//                );
-//                break;
-//        }
-//        return true;
-//    }
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.bottom_action_feed:
+                if (activeFragment != feedPagerFragment) {
+                    fragmentManger.beginTransaction().hide(activeFragment).show(feedPagerFragment).commit();
+                    activeFragment = feedPagerFragment;
+                }
+                break;
+
+            case R.id.bottom_action_bus:
+                if (activeFragment != busFragment) {
+                    fragmentManger.beginTransaction().hide(activeFragment).show(busFragment).commit();
+                    activeFragment = busFragment;
+                }
+                break;
+        }
+        return true;
+    }
 }

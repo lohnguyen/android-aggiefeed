@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/feedPagerFragment"
+        android:id="@+id/bottom_action_feed"
         android:icon="@drawable/ic_feed_24"
         android:title="@string/feed"
         android:enabled="true"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/busFragment"
+        android:id="@+id/bottom_action_bus"
         android:icon="@drawable/ic_bus_24"
         android:title="@string/bus"
         android:enabled="true"
