@@ -106,7 +106,7 @@ public class FeedListFragment extends Fragment implements FeedListAdapter.OnFeed
                     refreshing = false;
                 }
 
-                Log.e("howdy", "feed changed " + feedItems.size());
+                Log.e("feedList", "feed changed " + feedItems.size());
             });
         } else {
             feedListViewModel.getHappeningTodayFeedItems().observe(getViewLifecycleOwner(), feedItems -> {
@@ -120,7 +120,7 @@ public class FeedListFragment extends Fragment implements FeedListAdapter.OnFeed
                     refreshing = false;
                 }
 
-                Log.e("howdy", "happening today changed " + feedItems.size());
+                Log.e("feedList", "happening today changed " + feedItems.size());
             });
         }
     }
@@ -146,5 +146,12 @@ public class FeedListFragment extends Fragment implements FeedListAdapter.OnFeed
         intent.putExtra(EXTRA_END_DATE, feedItem.getEndDate());
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.e("feedList", "onDestroy");
+
+        super.onDestroy();
     }
 }

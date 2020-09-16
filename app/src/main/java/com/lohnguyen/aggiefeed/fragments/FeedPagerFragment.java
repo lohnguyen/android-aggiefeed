@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -26,6 +27,7 @@ public class FeedPagerFragment extends Fragment {
 
     ViewPager2 viewPager;
     FeedListViewModel feedListViewModel;
+    List<FeedListFragment> feedListFragments = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +36,19 @@ public class FeedPagerFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         feedListViewModel = new ViewModelProvider(this).get(FeedListViewModel.class);
+    }
+
+
+
+    @Override
+    public void onDestroy() {
+        Log.e("feedPager", "onDestroy");
+
+//        for (FeedListFragment fragment : feedListFragments) {
+//            getChildFragmentManager().beginTransaction().remove(fragment).commit();
+//        }
+
+        super.onDestroy();
     }
 
     @Nullable
@@ -48,7 +63,6 @@ public class FeedPagerFragment extends Fragment {
 
         feedListViewModel.fetchAll();
 
-        List<FeedListFragment> feedListFragments = new ArrayList<>();
         feedListFragments.add(FeedListFragment.newInstance());
         feedListFragments.add(FeedListFragment.newInstance(true));
 

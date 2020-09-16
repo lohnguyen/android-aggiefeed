@@ -60,7 +60,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_detail, menu);
+        inflater.inflate(R.menu.menu_top_detail, menu);
 
         if (!this.objectType.equals("event")) {
             MenuItem item = menu.findItem(R.id.menu_calendar);
